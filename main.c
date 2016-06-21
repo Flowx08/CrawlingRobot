@@ -41,12 +41,17 @@ int main(int argc, const char *argv[])
 	wiringPiSetup();
 	pinMode(27, OUTPUT);
 	
+	int wait_time = 1000;
+	
 	for (;;)
 	{
+		wait_time -= 10;
+		if (wait_time <= 100) wait_time = 1000; 
+		printf("%d\n", wait_time);
 		digitalWrite(27, HIGH);
-		delay(1000);
+		delay(wait_time);
 		digitalWrite(27, LOW);
-		delay(1000);
+		delay(wait_time);
 	}
 
 	return 0;

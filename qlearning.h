@@ -28,11 +28,12 @@ typedef struct Qstruct
 ////////////////////////////////////////////////////////////
 Qstruct* qstruct_init(int states_count, int actions_count)
 {
+	int i, k;
 	Qstruct* q = (Qstruct*)malloc(sizeof(Qstruct));
 	q->table = (float**)malloc(sizeof(float*) * states_count);
-	for (int i = 0; i < states_count; i++) {
+	for (i = 0; i < states_count; i++) {
 		q->table[i] = (float*)malloc(sizeof(float) * actions_count);
-		for (int k = 0; k < actions_count; k++)
+		for (k = 0; k < actions_count; k++)
 			q->table[i][k] = 0;
 	}
 	q->states_count = states_count;
@@ -49,7 +50,8 @@ Qstruct* qstruct_init(int states_count, int actions_count)
 ////////////////////////////////////////////////////////////
 void qstruct_free(Qstruct* q)
 {
-	for (int i = 0; i < q->states_count; i++)
+	int i;
+	for (i = 0; i < q->states_count; i++)
 		free(q->table[i]);
 	free(q->table);
 	free(q);
@@ -72,7 +74,8 @@ int qstruct_takeaction(Qstruct* q, int state)
 	//Get best action id and value
 	double rmax = -0x7FFF;
 	int maxid = 0;
-	for (int i = 0; i < q->actions_count; i++)
+	int i;
+	for (i = 0; i < q->actions_count; i++)
 		if (q->table[state][i] > rmax) {
 			rmax = q->table[state][i];
 			maxid = i;
@@ -95,7 +98,8 @@ double qstruct_getmaxreward(Qstruct* q, int state)
 {
 	//Get max reward value at a particular state
 	float rmax = -0x7FFF;
-	for (int i = 0; i < q->actions_count; i++)
+	int i;
+	for (i = 0; i < q->actions_count; i++)
 		if (q->table[state][i] > rmax) rmax = q->table[state][i];
 	return rmax;
 }
