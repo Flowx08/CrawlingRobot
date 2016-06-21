@@ -2,6 +2,7 @@
 ///	INCLUDES
 ////////////////////////////////////////////////////////////
 #include <stdio.h>
+#include <stdlib.h>
 #include <wiringPi.h>
 #include "qlearning.h"
 
@@ -40,19 +41,20 @@ int main(int argc, const char *argv[])
 
 	wiringPiSetup();
 	pinMode(27, OUTPUT);
-	
+	digitalWrite(27, LOW);
+
+	softPwmCreate(27, 0, 1000);
+	int val = 0;
+
+	for (;;) {
+		softPwmWrite(27, val);
+		printf("%d\n", val);
+		delay(2000);
+		val += 10;
+		if (val >= 60) val = 0;
+	}	
+
 	int wait_time = 1000;
-	
-	for (;;)
-	{
-		wait_time -= 10;
-		if (wait_time <= 100) wait_time = 1000; 
-		printf("%d\n", wait_time);
-		digitalWrite(27, HIGH);
-		delay(wait_time);
-		digitalWrite(27, LOW);
-		delay(wait_time);
-	}
 
 	return 0;
 }
